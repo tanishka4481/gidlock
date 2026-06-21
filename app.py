@@ -37,9 +37,9 @@ st.set_page_config(
     page_icon="🚦",
     layout="wide",
     menu_items={
-        'Get Help': 'https://github.com/tanishka4481/gidlock',
-        'Report a bug': 'https://github.com/tanishka4481/gidlock/issues',
-        'About': "# EventGuard\nBTP Traffic Intelligence Dashboard. Real-time traffic prediction and congestion triage application.\n\nGitHub Repository: https://github.com/YOUR_GITHUB_USERNAME/gidlock"
+        'Get Help': 'https://github.com/tanishka4481/Gridlock',
+        'Report a bug': 'https://github.com/tanishka4481/Gridlock/issues',
+        'About': "# EventGuard\nBTP Traffic Intelligence Dashboard. Real-time traffic prediction and congestion triage application.\n\nGitHub Repository: https://github.com/tanishka4481/Gridlock"
     }
 )
 
@@ -110,7 +110,7 @@ pages = st.sidebar.radio("Navigation Systems", [
 ])
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("[🌐 GitHub Repository](https://github.com/YOUR_GITHUB_USERNAME/gidlock)")
+st.sidebar.markdown("[🌐 GitHub Repository](https://github.com/tanishka4481/Gridlock)")
 st.sidebar.caption("EventGuard v2.7.5 • Real-Time Congestion Triage Engine")
 
 # ==========================================
