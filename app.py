@@ -29,8 +29,8 @@ st.set_page_config(
     page_icon="🚦",
     layout="wide",
     menu_items={
-        'Get Help': 'https://github.com/YOUR_GITHUB_USERNAME/gidlock',
-        'Report a bug': 'https://github.com/YOUR_GITHUB_USERNAME/gidlock/issues',
+        'Get Help': 'https://github.com/tanishka4481/gidlock',
+        'Report a bug': 'https://github.com/tanishka4481/gidlock/issues',
         'About': "# EventGuard\nBTP Traffic Intelligence Dashboard. Real-time traffic prediction and congestion triage application.\n\nGitHub Repository: https://github.com/YOUR_GITHUB_USERNAME/gidlock"
     }
 )
