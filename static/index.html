@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventGuard - Traffic Command Control</title>
+    
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Google Fonts: Outfit (Geometric UI) & IBM Plex Mono (Tabular Data) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- Full-screen map background -->
+    <div id="map"></div>
+    
+    <!-- 1. Header Bar -->
+    <header class="hud-card header-hud">
+        <div class="brand">
+            <div class="logo-text">EVENTGUARD</div>
+            <div class="sub-logo">BENGALURU TRAFFIC INTELLIGENCE</div>
+        </div>
+        <div class="system-status">
+            <span class="status-dot green"></span>
+            <span class="status-label">COMMAND SYSTEM ACTIVE</span>
+        </div>
+        <nav class="hud-tabs">
+            <button class="tab-btn active" data-tab="triage">Triage Predictor</button>
+            <button class="tab-btn" data-tab="routing">Route Optimizer</button>
+            <button class="tab-btn" data-tab="config">Station Config</button>
+        </nav>
+    </header>
+
+    <!-- 2. Left HUD Panel (Collapsible control drawers) -->
+    <aside class="hud-card left-panel">
+        
+        <!-- Tab 1: Triage Control Panel -->
+        <section id="panel-triage" class="panel-section active">
+            <h2>Incident Logging Console</h2>
+            <div class="instructions">Click on the map to automatically populate latitude and longitude coordinates.</div>
+            
+            <form id="incident-form">
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="latitude">Latitude</label>
+                        <input type="number" id="latitude" step="any" placeholder="12.9716" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="longitude">Longitude</label>
+                        <input type="number" id="longitude" step="any" placeholder="77.5946" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="event-cause">Incident Cause</label>
+                        <select id="event-cause" required></select>
+                    </div>
+                    <div class="form-col">
+                        <label for="event-type">Event Nature</label>
+                        <select id="event-type" required></select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="priority">Priority Level</label>
+                        <select id="priority" required></select>
+                    </div>
+                    <div class="form-col">
+                        <label for="veh-type">Involved Vehicle Class</label>
+                        <select id="veh-type" required></select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="road-closure">Requires Closure</label>
+                        <select id="road-closure" required></select>
+                    </div>
+                    <div class="form-col">
+                        <label for="junction">Junction Intersection</label>
+                        <input type="text" id="junction" value="Agara Junction" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="police-station">Police Station Sector</label>
+                        <select id="police-station" required></select>
+                    </div>
+                    <div class="form-col">
+                        <label for="corridor">Arterial Corridor</label>
+                        <select id="corridor" required></select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="incident-date">Reporting Date</label>
+                        <input type="date" id="incident-date" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="incident-time">Outbreak Time</label>
+                        <input type="time" id="incident-time" required>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" id="btn-add-queue" class="btn-primary">Add to Active Queue</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Tab 2: Routing Control Panel -->
+        <section id="panel-routing" class="panel-section">
+            <h2>Route Selection Console</h2>
+            
+            <div class="picker-selector">
+                <button type="button" id="btn-pick-origin" class="picker-btn active" data-mode="origin">Origin Target</button>
+                <button type="button" id="btn-pick-destination" class="picker-btn" data-mode="destination">Destination Target</button>
+            </div>
+            
+            <div class="form-group-block">
+                <div class="coordinate-display">
+                    <div class="coord-item">
+                        <span class="label">Origin</span>
+                        <span id="txt-origin" class="coords-value">12.9716, 77.5946</span>
+                    </div>
+                    <div class="coord-item">
+                        <span class="label">Destination</span>
+                        <span id="txt-destination" class="coords-value">12.9130, 77.6390</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hot-Linkage Queue Incident -->
+            <div class="form-group">
+                <label for="route-incident-select">Dispatch Incident Sync</label>
+                <select id="route-incident-select">
+                    <option value="none">Manual Coordinate Simulation Mode</option>
+                </select>
+                <div class="info-note">Sync origin to active incident, destination to sector station automatically.</div>
+            </div>
+            
+            <hr>
+            
+            <h2>Temporal Graph Controls</h2>
+            <div class="form-row">
+                <div class="form-col">
+                    <label for="sim-hour">Hour Profiles</label>
+                    <input type="range" id="sim-hour" min="0" max="23" value="18" class="range-slider">
+                    <span id="sim-hour-val" class="slider-display">18:00</span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col">
+                    <label for="sim-day">Weekday Selection</label>
+                    <select id="sim-day">
+                        <option value="0">Monday</option>
+                        <option value="1">Tuesday</option>
+                        <option value="2">Wednesday</option>
+                        <option value="3">Thursday</option>
+                        <option value="4">Friday</option>
+                        <option value="5">Saturday</option>
+                        <option value="6">Sunday</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="button" id="btn-run-route" class="btn-primary">Compute Path Traversal</button>
+            </div>
+        </section>
+
+        <!-- Tab 3: Station Configuration Panel -->
+        <section id="panel-config" class="panel-section">
+            <h2>Station Resource Pools</h2>
+            <div class="instructions">Adjust operational capacities. Modifying limits updates optimization knapsack constraints.</div>
+            
+            <div id="station-config-container" class="config-grid">
+                <!-- Populated dynamically via JS -->
+            </div>
+            
+            <div class="button-group">
+                <button type="button" id="btn-save-config" class="btn-primary">Save Resources Config</button>
+                <button type="button" id="btn-reset-config" class="btn-secondary">Restore Defaults</button>
+            </div>
+        </section>
+        
+    </aside>
+
+    <!-- 3. Bottom-Left Queue Panel -->
+    <aside class="hud-card queue-panel">
+        <div class="panel-header">
+            <h3>Active Incident Queue</h3>
+            <span id="queue-count" class="badge">0 Events</span>
+        </div>
+        <div class="table-container">
+            <table id="queue-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Junction</th>
+                        <th>Cause</th>
+                        <th>Priority</th>
+                        <th>Station</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="queue-tbody">
+                    <tr>
+                        <td colspan="6" class="empty-state">No incidents queued. Click map to log events.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer-actions">
+            <button type="button" id="btn-clear-queue" class="btn-secondary">Clear Queue</button>
+            <button type="button" id="btn-run-optimization" class="btn-primary">Run Allocation Solver</button>
+        </div>
+    </aside>
+
+    <!-- 4. Right Side Diagnostics & Pathfinding Comparison Panel -->
+    <aside class="hud-card diagnostics-panel" id="diagnostics-panel">
+        <div class="panel-header">
+            <h3>Routing Performance Metrics</h3>
+            <button id="btn-close-diagnostics" class="close-btn">&times;</button>
+        </div>
+        
+        <div class="metric-comparison-block">
+            <table id="metrics-table">
+                <thead>
+                    <tr>
+                        <th>Operational Metric Report</th>
+                        <th>Dijkstra (Optimal)</th>
+                        <th>A* (Heuristic)</th>
+                    </tr>
+                </thead>
+                <tbody id="metrics-tbody">
+                    <!-- Populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+        <div class="legend">
+            <div class="legend-item">
+                <span class="color-box blue"></span>
+                <span>Dijkstra Path (Solid Line)</span>
+            </div>
+            <div class="legend-item">
+                <span class="color-box green-dashed"></span>
+                <span>A* Path (Dashed Line)</span>
+            </div>
+            <div class="legend-item">
+                <span class="color-box orange-circle"></span>
+                <span>Incident Shockwave Boundary</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 5. Bottom Station Resource Allocation Overview -->
+    <footer class="hud-card resources-panel" id="resources-panel">
+        <div class="panel-header">
+            <h3>Knapsack Resource Allocations</h3>
+        </div>
+        <div class="allocation-grid" id="allocation-container">
+            <!-- Dynamic Knapsack allocations output -->
+            <div class="empty-state">Submit queue and execute Knapsack Solver to show optimized station resource deployment tables.</div>
+        </div>
+    </footer>
+
+    <!-- Leaflet.js Javascript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Leaflet Heatmap Plugin (bruteforce using canvas/pure js helper) -->
+    <script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+
+    <!-- Client Script -->
+    <script src="app.js"></script>
+</body>
+</html>

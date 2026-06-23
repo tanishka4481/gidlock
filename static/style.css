@@ -1,0 +1,644 @@
+/* Global Variables & Colors */
+:root {
+    --bg-glass: rgba(255, 255, 255, 0.85);
+    --border-glass: rgba(200, 204, 208, 0.5);
+    --blur-glass: blur(12px) saturate(180%);
+    
+    --primary-blue: #007AFF;
+    --primary-orange: #FF5E00;
+    --success-green: #34C759;
+    --warning-gold: #FFCC00;
+    
+    --text-dark: #1F2937;
+    --text-muted: #6B7280;
+    --border-clean: #D1D5DB;
+    --bg-card: #FFFFFF;
+}
+
+/* Reset styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-dark);
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #F3F4F6;
+}
+
+/* Leaflet map background */
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* HUD Glassmorphism base style */
+.hud-card {
+    position: absolute;
+    background: var(--bg-glass);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: 0px; /* Sharp technical edges */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header HUD layout */
+.header-hud {
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    height: 65px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-dark);
+}
+
+.sub-logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-top: 1px;
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.status-dot.green {
+    background-color: var(--success-green);
+    box-shadow: 0 0 8px var(--success-green);
+}
+
+.status-dot.orange {
+    background-color: var(--primary-orange);
+    box-shadow: 0 0 8px var(--primary-orange);
+}
+
+/* HUD Navigation Tabs */
+.hud-tabs {
+    display: flex;
+    gap: 5px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 0px;
+    transition: all 0.15s ease-in-out;
+}
+
+.tab-btn:hover {
+    color: var(--text-dark);
+    border-color: var(--border-clean);
+}
+
+.tab-btn.active {
+    color: #FFFFFF;
+    background-color: var(--text-dark);
+    border-color: var(--text-dark);
+}
+
+/* Left side Panel */
+.left-panel {
+    top: 95px;
+    left: 15px;
+    width: 380px;
+    bottom: 320px;
+    overflow-y: auto;
+}
+
+/* Scrollbar styles */
+.left-panel::-webkit-scrollbar, .table-container::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+.left-panel::-webkit-scrollbar-thumb, .table-container::-webkit-scrollbar-thumb {
+    background: rgba(31, 41, 55, 0.2);
+}
+
+.panel-section {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+}
+
+.panel-section.active {
+    display: flex;
+}
+
+h2 {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    border-bottom: 1px dashed var(--border-clean);
+    padding-bottom: 5px;
+}
+
+.instructions {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+/* Forms layout */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.form-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    font-family: inherit;
+    border: 1px solid var(--border-clean);
+    background-color: #FFFFFF;
+    border-radius: 0px;
+    outline: none;
+    color: var(--text-dark);
+}
+
+input:focus, select:focus {
+    border-color: var(--text-dark);
+}
+
+input[type="number"] {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Stepper selection for coordinates */
+.picker-selector {
+    display: flex;
+    border: 1px solid var(--border-clean);
+    margin-bottom: 15px;
+}
+
+.picker-btn {
+    flex: 1;
+    background: #FFFFFF;
+    border: none;
+    padding: 8px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.picker-btn:first-child {
+    border-right: 1px solid var(--border-clean);
+}
+
+.picker-btn.active {
+    background: var(--text-dark);
+    color: #FFFFFF;
+}
+
+.coordinate-display {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #F9FAFB;
+    border: 1px solid var(--border-clean);
+    padding: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    margin-bottom: 15px;
+}
+
+.coord-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.coord-item .label {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+.range-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--border-clean);
+    outline: none;
+    cursor: pointer;
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--text-dark);
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.slider-display {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    align-self: flex-end;
+    margin-top: 2px;
+}
+
+.info-note {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+    line-height: 1.3;
+}
+
+/* Operational Buttons */
+.btn-primary {
+    background: var(--text-dark);
+    color: #FFFFFF;
+    border: 1px solid var(--text-dark);
+    padding: 10px 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-radius: 0px;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background: #000000;
+    border-color: #000000;
+}
+
+.btn-secondary {
+    background: #FFFFFF;
+    color: var(--text-dark);
+    border: 1px solid var(--border-clean);
+    padding: 10px 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-radius: 0px;
+    width: 100%;
+}
+
+.btn-secondary:hover {
+    background: #F3F4F6;
+    border-color: var(--text-dark);
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+/* Queue Panel Bottom-Left */
+.queue-panel {
+    bottom: 15px;
+    left: 15px;
+    width: 380px;
+    height: 290px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.panel-header h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+.badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    background: var(--text-dark);
+    color: #FFFFFF;
+    padding: 2px 8px;
+    font-weight: 600;
+}
+
+.table-container {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--border-clean);
+    background: #FFFFFF;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+}
+
+th {
+    background: #F3F4F6;
+    border-bottom: 1px solid var(--border-clean);
+    font-weight: 600;
+    text-align: left;
+    padding: 6px 8px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #F3F4F6;
+    vertical-align: middle;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    padding: 20px 10px;
+}
+
+.action-btn {
+    background: transparent;
+    border: 1px solid var(--border-clean);
+    color: var(--primary-orange);
+    padding: 2px 6px;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background: var(--primary-orange);
+    color: #FFFFFF;
+    border-color: var(--primary-orange);
+}
+
+.panel-footer-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Config Grid */
+.config-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-clean);
+    background: #FFFFFF;
+    padding: 10px;
+}
+
+.config-item {
+    border-bottom: 1px solid #F3F4F6;
+    padding-bottom: 8px;
+}
+
+.config-item:last-child {
+    border-bottom: none;
+}
+
+.config-item h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+}
+
+/* Resource Allocation bottom tray */
+.resources-panel {
+    bottom: 15px;
+    left: 410px;
+    right: 15px;
+    height: 180px;
+    overflow: hidden;
+}
+
+.allocation-grid {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    flex: 1;
+    padding: 5px 0;
+}
+
+.allocation-card {
+    min-width: 200px;
+    background: #FFFFFF;
+    border: 1px solid var(--border-clean);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+}
+
+.allocation-card h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    border-bottom: 1px dashed var(--border-clean);
+    padding-bottom: 3px;
+}
+
+.alloc-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+}
+
+.alloc-row .label {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-muted);
+}
+
+.alloc-status {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+}
+
+.alloc-status.managed {
+    color: var(--primary-blue);
+}
+
+.alloc-status.under-res {
+    color: var(--primary-orange);
+}
+
+/* Progress bar style */
+.mono-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Diagnostics pane (floating right) */
+.diagnostics-panel {
+    top: 95px;
+    right: 15px;
+    width: 440px;
+    max-height: 480px;
+    display: none; /* Controlled dynamically */
+}
+
+.metric-comparison-block {
+    border: 1px solid var(--border-clean);
+    background: #FFFFFF;
+    margin-bottom: 12px;
+    overflow-x: auto;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.close-btn:hover {
+    color: var(--text-dark);
+}
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    border-top: 1px dashed var(--border-clean);
+    padding-top: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-box {
+    width: 25px;
+    height: 4px;
+    display: inline-block;
+}
+
+.color-box.blue {
+    background-color: var(--primary-blue);
+}
+
+.color-box.green-dashed {
+    border-top: 2px dashed var(--success-green);
+}
+
+.color-box.orange-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px dashed var(--primary-orange);
+    background: rgba(255, 94, 0, 0.2);
+}
+
+/* Custom leaflet control clean overrides */
+.leaflet-bar {
+    border-radius: 0px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid var(--border-glass) !important;
+}
+
+.leaflet-bar a {
+    border-radius: 0px !important;
+    background-color: var(--bg-glass) !important;
+    color: var(--text-dark) !important;
+}
