@@ -34,6 +34,7 @@
         <nav class="hud-tabs">
             <button class="tab-btn active" data-tab="triage">Triage Predictor</button>
             <button class="tab-btn" data-tab="routing">Route Optimizer</button>
+            <button class="tab-btn" data-tab="eda">EDA Dashboard</button>
             <button class="tab-btn" data-tab="config">Station Config</button>
         </nav>
     </header>
@@ -280,6 +281,99 @@
             <div class="empty-state">Submit queue and execute Knapsack Solver to show optimized station resource deployment tables.</div>
         </div>
     </footer>
+
+    <!-- 6. Full-Screen EDA Dashboard Overlay -->
+    <main class="hud-card eda-overlay-panel panel-section" id="panel-eda">
+        <div class="panel-header" style="margin-bottom: 5px;">
+            <h2>📈 Bengaluru Traffic Intelligence Dashboard</h2>
+            <div class="sub-logo" style="margin-top: 2px;">HISTORICAL ANALYSIS & BOTTLENECK DISCOVERIES</div>
+        </div>
+        
+        <!-- Tab buttons inside the EDA panel -->
+        <div class="eda-sub-tabs">
+            <button type="button" class="eda-sub-btn active" data-sub="temporal">🕒 Temporal Patterns</button>
+            <button type="button" class="eda-sub-btn" data-sub="corridor">Road Capacities</button>
+            <button type="button" class="eda-sub-btn" data-sub="junction">Junction Hotspots</button>
+            <button type="button" class="eda-sub-btn" data-sub="priority">Priority Matrix</button>
+        </div>
+        
+        <!-- EDA Scroll Content -->
+        <div class="eda-scroll-content">
+            <!-- Sub-tab 1: Temporal Patterns -->
+            <div id="eda-temporal" class="eda-sub-section active">
+                <div class="insight-callout">
+                    <strong>Core Data Insight:</strong> Vehicle breakdowns peak consistently between 5-7 AM and 5-8 PM on Outer Ring Road arterial routes, matching logistics carrier operation window switches before cross-city entry blocks lock down. Clear macro monthly fluctuations track seasonal monsoon peaks where clearance velocity drops by up to 42%.
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-wrapper">
+                        <h4>🕒 Hourly Operations Pulse (By Cause)</h4>
+                        <img src="charts/visual_b_incident_hourly_patterns.png" alt="Hourly Patterns">
+                    </div>
+                    <div class="chart-wrapper">
+                        <h4>📅 Macro Monthly Influx vs Response Velocity</h4>
+                        <img src="charts/chart_8_monthly_macro_trend.png" alt="Monthly Macro Trend">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sub-tab 2: Corridor & Station Capacities -->
+            <div id="eda-corridor" class="eda-sub-section">
+                <div class="insight-callout">
+                    <strong>Core Data Insight:</strong> Peenya and Outer Ring Road corridors accumulate the highest density of commercial vehicle accidents. Heavy vehicle breakdowns on three-lane corridors trigger non-linear queue expansions, resulting in average clearance delays exceeding 110 minutes.
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-wrapper">
+                        <h4>🛣️ Top 10 High-Incident Traffic Corridors</h4>
+                        <img src="charts/chart_13_top_corridors.png" alt="Top Corridors">
+                    </div>
+                    <div class="chart-wrapper">
+                        <h4>📊 Breakdown Response: Corridor vs Vehicle Type</h4>
+                        <img src="charts/chart_22_breakdown_heatmap.png" alt="Breakdown Response Heatmap">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sub-tab 3: Critical Junction Hotspots -->
+            <div id="eda-junction" class="eda-sub-section">
+                <div class="insight-callout">
+                    <strong>Core Data Insight:</strong> Agara Junction and Central Silk Board track with an average historical clearing window exceeding 140 minutes when heavy fleet carriers breakdown during peak morning windows. Higher closure requirements directly correlate with longer clearance timelines, highlighting the need for early diversion planning.
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-wrapper">
+                        <h4>🚏 Top 15 Junctions by Traffic Delay Stress</h4>
+                        <img src="charts/visual_g_top_impacted_junctions.png" alt="Junction Hotspots">
+                    </div>
+                    <div class="chart-wrapper">
+                        <h4>📋 Closure Rates vs Clearance Timelines</h4>
+                        <img src="charts/chart_24_lookup_blueprint.png" alt="Closure vs Clearance Blueprint">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sub-tab 4: Priority Deployment & Status Metrics -->
+            <div id="eda-priority" class="eda-sub-section">
+                <div class="insight-callout">
+                    <strong>Core Data Insight:</strong> Mapped 'High Priority' incident categorizations contain substantial internal duration variances, validating that BTP must prioritize incident type and vehicle class over basic priority labels. Donut status footprints show that active response tracking covers 94.7% of logged events.
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-wrapper">
+                        <h4>⚖️ Strategic Deployment & Allocation Matrix</h4>
+                        <img src="charts/chart_25_priority_action_matrix.png" alt="Strategic Deployment Matrix">
+                    </div>
+                    <div class="chart-wrapper-row">
+                        <div class="chart-wrapper-half">
+                            <h4>🏢 Lifecycle Status Footprint</h4>
+                            <img src="charts/chart_4_status_donut.png" alt="Lifecycle Status Footprint">
+                        </div>
+                        <div class="chart-wrapper-half">
+                            <h4>🚧 Road Closure Requirements by Cause</h4>
+                            <img src="charts/chart_5_road_closure_by_cause.png" alt="Road Closure Requirements">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <!-- Leaflet.js Javascript -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>

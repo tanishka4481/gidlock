@@ -646,3 +646,143 @@ td {
     background-color: var(--bg-glass) !important;
     color: var(--text-dark) !important;
 }
+
+/* EDA Dashboard Full-Screen Overlay Panel */
+.eda-overlay-panel {
+    top: 95px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    z-index: 100;
+    display: none; /* Displayed via active class */
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.eda-overlay-panel.active {
+    display: flex;
+}
+
+/* Tab controls inside EDA overlay */
+.eda-sub-tabs {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    border-bottom: 1px dashed var(--border-clean);
+    padding-bottom: 10px;
+}
+
+.eda-sub-btn {
+    background: transparent;
+    border: 1px solid var(--border-clean);
+    color: var(--text-muted);
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.15s ease-in-out;
+}
+
+.eda-sub-btn:hover {
+    color: var(--text-dark);
+    border-color: var(--text-dark);
+}
+
+.eda-sub-btn.active {
+    background-color: var(--text-dark);
+    color: #FFFFFF;
+    border-color: var(--text-dark);
+}
+
+/* Insight text callout */
+.insight-callout {
+    background-color: rgba(0, 122, 255, 0.05);
+    border-left: 4px solid var(--primary-blue);
+    padding: 15px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Scroll content area */
+.eda-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.eda-sub-section {
+    display: none;
+    flex-direction: column;
+}
+
+.eda-sub-section.active {
+    display: flex;
+}
+
+/* Grid for charts placement */
+.charts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.chart-wrapper {
+    background: #FFFFFF;
+    border: 1px solid var(--border-clean);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-wrapper h4 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dark);
+    align-self: flex-start;
+}
+
+.chart-wrapper img {
+    max-width: 100%;
+    max-height: 520px;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid #F3F4F6;
+}
+
+/* Flex layout helper for last row with two smaller charts */
+.chart-wrapper-row {
+    display: flex;
+    gap: 20px;
+}
+
+.chart-wrapper-half {
+    flex: 1;
+    background: #FFFFFF;
+    border: 1px solid var(--border-clean);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-wrapper-half h4 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dark);
+    align-self: flex-start;
+}
+
+.chart-wrapper-half img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid #F3F4F6;
+}

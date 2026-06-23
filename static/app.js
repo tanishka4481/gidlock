@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initForms();
     initRoutePicker();
     initStationControls();
+    initEdaTabs();
 });
 
 // Tab Transitions Setup
@@ -67,6 +68,36 @@ function initTabs() {
             } else {
                 hideRouteMarkers();
             }
+            
+            // Toggle sidebar panel visibility depending on full-screen EDA mode
+            if (activeTab === 'eda') {
+                document.querySelector('.left-panel').style.display = 'none';
+                document.querySelector('.queue-panel').style.display = 'none';
+                document.querySelector('.resources-panel').style.display = 'none';
+                const diagPanel = document.getElementById('diagnostics-panel');
+                if (diagPanel) diagPanel.style.display = 'none';
+            } else {
+                document.querySelector('.left-panel').style.display = 'flex';
+                document.querySelector('.queue-panel').style.display = 'flex';
+                document.querySelector('.resources-panel').style.display = 'flex';
+            }
+        });
+    });
+}
+
+// Initialize Sub-tabs inside EDA Dashboard
+function initEdaTabs() {
+    const subButtons = document.querySelectorAll('.eda-sub-btn');
+    const subSections = document.querySelectorAll('.eda-sub-section');
+    
+    subButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            subButtons.forEach(b => b.classList.remove('active'));
+            subSections.forEach(s => s.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const target = btn.getAttribute('data-sub');
+            document.getElementById(`eda-${target}`).classList.add('active');
         });
     });
 }
